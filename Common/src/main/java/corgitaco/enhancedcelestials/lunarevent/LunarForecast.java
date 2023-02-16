@@ -44,7 +44,7 @@ public class LunarForecast {
 
     private Holder<LunarEvent> currentEvent;
     private Holder<LunarEvent> mostRecentEvent;
-    private Holder<LunarEvent> defaultEvent;
+    private final Holder<LunarEvent> defaultEvent;
     private float blend = 1;
     private long lastCheckedGameTime;
 
@@ -304,7 +304,14 @@ public class LunarForecast {
         return pastEvents;
     }
 
-    public Holder<LunarEvent> getCurrentEvent() {
+    public Holder<LunarEvent> getCurrentEvent(boolean isClearSkies) {
+        if (this.dimensionSettingsHolder.value().requiresClearSkies() && !isClearSkies) {
+            return this.defaultEvent;
+        }
+        return currentEvent;
+    }
+
+    public Holder<LunarEvent> getCurrentEventRaw() {
         return currentEvent;
     }
 
